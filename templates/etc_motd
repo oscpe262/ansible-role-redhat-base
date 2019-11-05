@@ -1,0 +1,22 @@
+{% if 'fourier' in ansible_hostname or 'gauss' in ansible_hostname %}
+###############################################################################
+###############################################################################
+This server is restarted the first Monday in every month at 06:00.
+Please save your work and in time to prevent loss of data.
+##############################################################################
+{% endif %}
+{#
+
+#}
+{% if 'm03r2' in ansible_hostname %}
+{{ ansible_lsb.description }} {{ ansible_kernel }}
+--------------------  {{ ansible_hostname }} Saab Dynamics AB --------------------------
+
+               Unauthorized access is prohibited
+               Tilltraede foerbjudet foer obehoeriga
+
+-----------------------------------------------------------------------------
+{% endif %}
+{#
+
+#}

@@ -1,0 +1,29 @@
+## roles/ansible-role-redhat-base/tasks/main.yml
+# vim:ft=yaml.ansible:
+---
+# Load distribution vars
+- include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+  tags: base
+
+# Install repositories and packages
+- include_tasks: install.yml
+
+# Configuration /etc
+- include_tasks: config.yml
+
+# Start/stop basic services
+- include_tasks: services.yml
+
+# Security settings
+- include_tasks: security.yml
+
+# Create users
+- include_tasks: users.yml
+
+# Admin user
+- include_tasks: admin.yml
+
+...

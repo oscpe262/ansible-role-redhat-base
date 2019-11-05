@@ -1,0 +1,4 @@
+## ansible-role-redhat-base/tasks/security.yml
+# vim:ft=yaml.ansible:
+---
+...

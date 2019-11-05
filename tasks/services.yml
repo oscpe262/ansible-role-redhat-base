@@ -1,0 +1,45 @@
+## ansible-role-redhat-base/tasks/services.yml
+# vim:ft=yaml.ansible:
+---
+- name: "Ensure SSH daemon is running"
+  service:
+    name: sshd
+    enabled: true
+    state: started
+  tags:
+    - base
+    - services
+
+- name: "Ensure `/var/log/journal` exists"
+  file:
+    path: /var/log/journal
+    state: directory
+    owner: root
+    group: systemd-journal
+    mode: 0755
+  notify:
+    - restart journald
+  tags:
+    - base
+    - services
+
+- name: "Ensure specified services are running"
+  services:
+    name: '{{ item }}'
+    enabled: true
+    state: started
+  with_items: '{{ base_start_services }}'
+  tags:
+    - base
+    - services
+
+- name: "Ensure specified services are NOT running"
+  services:
+    name: '{{ item }}'
+    enabled: false
+    state: stopped
+  with_items: '{{ base_stop_services }}'
+  tags:
+    - base
+    - services
+...

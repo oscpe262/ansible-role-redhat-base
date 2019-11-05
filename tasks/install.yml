@@ -1,0 +1,92 @@
+## ansible-role-redhat-base/tasks/install.yml
+# vim:ft=yaml.ansible:
+#
+# Install custom repos and packages. Repos should be installed using an RPM package.
+# A list of URLs to the RPMs for these repos should be specified in group_vars or host_vars.
+## TODO: Reconsider this using static repos instead for SAAB
+---
+
+- name: "Check min. value of 'base_repo_installonly_limit' (>=2)"
+  debug:
+    msg: "The value of 'base_repo_installonly_limit' should be at least 2 (currently {{ base_repo_installonly_limit }})."
+  failed_when: base_repo_installonly_limit < 2
+  tags:
+    - base
+    - install
+
+- name: "Ensure the machine-ID is available"
+  command: systemd-machine-id-setup
+  args:
+    creates: /etc/machine-id
+  tags: 
+    - base
+
+- name: "Ensure Ansible dependencies are installed"
+  package:
+    name: '{{ item }}'
+    state: installed
+  with_items: '{{ base_dependencies }}'
+  tags:
+    - base
+    - install
+
+- name: "Package management config ({{ base_package_manager }})"
+  template:
+    src:  'etc_{{ base_package_manager }}.conf.j2'
+    dest: '{{ base_package_manager_configuration }}'
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - base
+    - install
+
+## See TODO above
+- name: "Ensure specified external repos are installed."
+  package:
+    name: '{{ item }}'
+    state: installed
+  with_items: "{{ base_repositories }}"
+  tags:
+    - base
+    - install
+
+- name: "Ensure specified repos are enabled."
+  lineinfile:
+    dest: "/etc/yum.repos.d/{{ item }}.repo"
+    line: 'enabled=1'
+    state: present
+    regexp: '^enabled='
+  with_items: '{{ base_enable_repos }}'
+  tags:
+    - base
+    - install
+
+- name: "Ensure specified packages are installed"
+  package:
+    name: '{{ item }}'
+    state: installed
+  with_flattened: '{{ base_install_packages }}'
+  tags:
+    - rhbase
+    - install
+
+- name: "Ensure specified packages are NOT installed"
+  package:
+    name: '{{ item }}'
+    state: absent
+  with_flattened: '{{ base_remove_packages }}'
+  tags:
+    - base
+    - install
+
+- name: "Ensure all updates are installed"
+  package:
+    name: '*'
+    state: latest
+  when: base_update
+  tags:
+    - base
+    - install
+
+...

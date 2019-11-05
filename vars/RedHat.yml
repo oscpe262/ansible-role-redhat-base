@@ -1,0 +1,15 @@
+## roles/ansible-role-redhat-base/vars/RedHat.yml
+---
+base_systemd_services:
+  - systemd-journald
+  - systemd-tmpfiles-setup-dev
+  - systemd-tmpfiles-setup
+
+base_dependencies:
+  - libselinux-python
+  - libsemanage-python
+  - firewalld
+
+base_package_manager: yum
+base_package_manager_configuration: /etc/yum.conf
+...

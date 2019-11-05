@@ -1,0 +1,4 @@
+## roles/ansible-role-redhat-base/vars/main.yml
+# vim:ft=yaml.ansible:
+---
+...

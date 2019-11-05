@@ -1,0 +1,35 @@
+## roles/ansible-role-redhat-base/defaults/main.yml
+# vim:ft=yaml.ansible:
+---
+# Package management
+base_enable_repos: []
+base_install_packages: []
+base_remove_packages: []
+base_repo_exclude: []
+base_repo_gpgcheck: false
+base_repo_installonly_limit: 2
+base_repo_remove_dependencies: true
+base_repo_exclude_from_update: []
+base_repositories: []
+base_update: false
+
+# Configuration
+base_hosts_entry: false
+base_motd: false
+base_tz: :/etc/localtime
+
+# Services
+base_start_services: []
+base_stop_services: []
+
+# Security
+base_firewall_allow_services: []
+base_firewall_allow_ports: []
+base_firewall_interfaces: []
+base_selinux_state: enforcing
+base_selinux_booleans: []
+
+# Users
+base_users: []
+base_user_groups: []
+...

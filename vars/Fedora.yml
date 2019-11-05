@@ -1,0 +1,16 @@
+## roles/ansible-role-redhat-base/vars/Fedora.yml
+---
+base_systemd_services:
+  - systemd-journald.service
+  - systemd-tmpfiles-setup-dev.service
+  - systemd-tmpfiles-setup.service
+
+base_dependencies:
+  - libselinux-python
+  - libsemanage-python
+  - firewalld
+  - python-firewall
+
+base_package_manager: dnf
+base_package_manager_configuration: /etc/dnf/dnf.conf
+...

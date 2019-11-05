@@ -1,0 +1,15 @@
+{{ ansible_managed }}, role: redhat-base
+[main]
+gpgcheck={{ base_repo_gpgcheck }}
+installonly_limit={{ base_repo_installonly_limit }}
+clean_requirements_on_remove={{ base_repo_remove_dependencies }}
+
+{% if base_repo_exclude_from_update|length != 0 %}
+exclude={% for item in base_repo_exclude_from_update %}{{ item }} {%endfor %}
+{% endif %}
+{% if base_proxy %}
+proxy=http://localhost:3128
+{% else %}
+#proxy=http://localhost:3128
+{% endif %}
+

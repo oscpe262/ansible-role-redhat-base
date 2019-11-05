@@ -1,0 +1,31 @@
+## ansible-role-redhat-base/tasks/config.yml
+# vim:ft=yaml.ansible:
+---
+
+# Host name in the hosts file speeds up the Gathering Facts phase, amongst others.
+- name: "Ensure host name is in the hosts file"
+  lineinfile:
+    dest: /etc/hosts
+    state: present
+    line: "{{ ansible_all_ipv4_addresses|last }} {{ ansible_hostname }} {{ ansible_hostname }}.{{ ansible_domain }}"
+    regexp: "{{ ansible_hostname }}"
+  when: base_hosts_entry
+  tags:
+    - base
+    - rhconfig
+
+- name: "Install custom motd"
+  template:
+    src: etc_motd
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: 0644
+  when: base_motd == true
+  tags:
+    - base
+    - rhconfig
+
+- name: Set timezone environment variable
+  t
+...
